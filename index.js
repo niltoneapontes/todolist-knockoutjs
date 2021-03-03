@@ -1,39 +1,46 @@
-function ChronometerViewModel() {
+class Task {
+  constructor({title, isDone = false}) {
+    this.title = ko.observable(title);
+    this.isDone = ko.observable(isDone);
+  }
+}
+
+function ToDoViewModel() {
   let self = this;
-  self.time = ko.observable(0);
-  self.message = ko.observable("Vamos lá");
+  const storagedTasks = localStorage.getItem('@KnockList:tasks');
+  self.tasks = ko.observableArray(storagedTasks ? JSON.parse(storagedTasks) : []);
+  self.newTask = ko.observable("").extend({
+    validation: {
+      message: "Digite mais de 3 caractéres",
+      validator: function(value) {
+        return value.length > 2;
+      }
+    }
+  });
 
-  let lastTimer = 0;
+  self.addTask = function() {
+    var errors = ko.validation.group(self);
+    if (errors().length > 0)
+    {
+        alert("Insira uma tarefa válida");
+        errors.showAllMessages(true);
 
-  self.startCount = function(data, event) {
-    lastTimer = self.time();
-    self.message("GO!");
+        return false;
+    }
+    self.tasks.push(new Task({ title: self.newTask() }));
+    self.newTask();
+  };
 
-    const repeat = setInterval(() => {
-      let aux = self.time() - 1;
+  self.tasks.subscribe(() => {
+    let tasksToStorage = self.tasks();
+    localStorage.setItem('@KnockList:tasks', ko.toJSON(tasksToStorage));
+  })
 
-      aux < 0 ? (
-        clearInterval(repeat),
-        self.message("STOP!")
-      ) : (
-        self.time(aux)
-      )
-
-    }, 1000);
-  }
-
-  self.resetCount = function(data, event) {
-    clearInterval();
-    self.time(0);
-    self.message("Vamos lá");
-  }
-
-  self.again = function(data,event) {
-    self.time(lastTimer);
-    self.startCount();
+  self.deleteTask = function(task) {
+    self.tasks.remove(task);
   }
 };
 
 const selector = document.querySelector('main#binding');
 
-ko.applyBindings(new ChronometerViewModel, selector);
+ko.applyBindings(new ToDoViewModel(), selector);

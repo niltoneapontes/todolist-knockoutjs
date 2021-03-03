@@ -6,40 +6,47 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link rel="shortcut icon" href="timer.svg" type="image/x-icon">
+  <link rel="shortcut icon" href="list.svg" type="image/x-icon">
+  <link rel="icon" href="list.svg">
+  <link rel="apple-touch-icon-precomponsed" href="list.svg">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
-  <title>KnockTimer</title>
+  <title>KnockList</title>
 </head>
 
 <body>
   <main id="binding">
-    <img src="timer.svg" alt="Relógio"></img>
-    <h1>KnockTimer</h1>
-    <span>O melhor timer construído com KnockoutJS</span>
-
-    <label>
-      <h2>Quanto tempo quer marcar?</h2>
-      <input type="number" min="0" max="999" data-bind="value: time" />
-      <button id="againButton" type="button" data-bind="click: again">
-        <img id="again" src="refresh.svg" alt="Novamente">
-      </button>
-    </label>
-    <h3 data-bind="text: message"></h3>
-    <div>
-      <button type="button" data-bind="click: startCount">Iniciar</button>
-      <button id="reset" type="button" data-bind="click: resetCount">Resetar</button>
-    </div>
+    <img src="list.svg" alt="Relógio"></img>
+    <h1>KnockList</h1>
+    <span>Organize suas tarefas diárias.</span>
+    <form data-bind="submit: addTask">
+      <input id="addTaskInput" type="text" data-bind="value: newTask" placeholder="Digite sua tarefa">
+      <button type="submit">+</button>
+    </form>
+    <ul data-bind="foreach: tasks, visible: tasks().length > 0">
+      <li>
+        <label>
+          <input type="checkbox" name="isDone" data-bind="checked: isDone">
+          <span class="checkmark"></span>
+          <input class="edit" data-bind="value: title"></input>
+        </label>
+        <a href="#" class="delete" data-bind="click: $parent.deleteTask">&times;</a>
+      </li>
+    </ul>
   </main>
+  <footer>
+    <p>© 2021 - All rights reserved</p>
+    <div>Icons made by <a href="" title="fjstudio">fjstudio</a> and <a href="https://www.freepik.com"
+        title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.min.js"
     integrity="sha512-vs7+jbztHoMto5Yd/yinM4/y2DOkPLt0fATcN+j+G4ANY2z4faIzZIOMkpBmWdcxt+596FemCh9M18NUJTZwvw=="
     crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout-validation/2.0.4/knockout.validation.min.js"
+    crossorigin="anonymous"></script>
   <script src="index.js"></script>
-  <footer>
-    <div>Icons made by <a href="" title="fjstudio">fjstudio</a> and <a href="https://www.freepik.com"
-        title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-  </footer>
+
 </body>
 
 </html>
