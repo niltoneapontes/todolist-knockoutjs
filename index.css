@@ -11,7 +11,13 @@ body {
   font-family: 'Roboto', sans-serif;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100vh;
+}
+
+@media(max-width: 768px) {
+  body{
+    height: 80vh;
+  }
 }
 
 main {
