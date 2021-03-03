@@ -28,7 +28,7 @@ function ToDoViewModel() {
         return false;
     }
     self.tasks.push(new Task({ title: self.newTask() }));
-    self.newTask();
+    self.newTask("");
   };
 
   self.tasks.subscribe(() => {
